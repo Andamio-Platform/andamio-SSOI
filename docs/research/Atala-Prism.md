@@ -75,6 +75,8 @@ Atala PRISM is a powerful decentralized identity solution built on the Cardano b
 
 ### Resources
 
-[Identus Repository](https://github.com/hyperledger/identus)
+[Nuttawut Kongsuwan The Hitchhiker’s Guide to KERI. Part 1](https://medium.com/finema/the-hitchhikers-guide-to-keri-part-1-51371f655bba)
 
-[Identus Documentation](https://hyperledger.github.io/identus-docs/)
+[Nuttawut Kongsuwan The Hitchhiker’s Guide to KERI. Part 2](https://medium.com/finema/the-hitchhikers-guide-to-keri-part-2-what-exactly-is-keri-e46a649ac54c)
+
+[Nuttawut Kongsuwan The Hitchhiker’s Guide to KERI. Part 3](https://medium.com/finema/the-hitchhikers-guide-to-keri-part-3-how-do-you-use-keri-2d1724afa432)
