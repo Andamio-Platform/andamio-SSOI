@@ -1,0 +1,999 @@
+{
+    "definitions": {
+        "AddCredentialSignerTxRequest": {
+            "properties": {
+                "aliasToCred": {
+                    "type": "string"
+                },
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "credential": {
+                    "type": "string"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "credential",
+                "aliasToCred"
+            ],
+            "type": "object"
+        },
+        "AddCredentialTokenTxRequest": {
+            "properties": {
+                "aliasToCred": {
+                    "type": "string"
+                },
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "issuer222TxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "issuerAlias": {
+                    "type": "string"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "issuer222TxRef",
+                "aliasToCred",
+                "issuerAlias"
+            ],
+            "type": "object"
+        },
+        "AddRewardsTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "lovelaceRewards": {
+                    "type": "integer"
+                },
+                "requiredIntCredentials": {
+                    "items": {
+                        "items": [
+                            {
+                                "$ref": "#/definitions/GYMintingPolicyId"
+                            },
+                            {
+                                "type": "integer"
+                            }
+                        ],
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "requiredStrCredentials": {
+                    "items": {
+                        "items": [
+                            {
+                                "$ref": "#/definitions/GYMintingPolicyId"
+                            },
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            }
+                        ],
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "tokensToDeposit": {
+                    "items": {
+                        "items": [
+                            {
+                                "$ref": "#/definitions/GYMintingPolicyId"
+                            },
+                            {
+                                "$ref": "#/definitions/GYTokenName"
+                            },
+                            {
+                                "type": "integer"
+                            }
+                        ],
+                        "maxItems": 3,
+                        "minItems": 3,
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "requiredIntCredentials",
+                "requiredStrCredentials",
+                "lovelaceRewards",
+                "tokensToDeposit"
+            ],
+            "type": "object"
+        },
+        "GYAddressBech32": {
+            "description": "An address, serialised as Bech32.",
+            "example": "addr_test1qrsuhwqdhz0zjgnf46unas27h93amfghddnff8lpc2n28rgmjv8f77ka0zshfgssqr5cnl64zdnde5f8q2xt923e7ctqu49mg5",
+            "format": "bech32",
+            "type": "string"
+        },
+        "GYMintingPolicyId": {
+            "description": "This is the hash of a minting policy script.",
+            "example": "ff80aaaf03a273b8f5c558168dc0e2377eea810badbae6eceefc14ef",
+            "format": "hex",
+            "maxLength": 56,
+            "minLength": 56,
+            "type": "string"
+        },
+        "GYPubKeyHash": {
+            "description": "The hash of a public key.",
+            "example": "e1cbb80db89e292269aeb93ec15eb963dda5176b66949fe1c2a6a38d",
+            "format": "hex",
+            "maxLength": 56,
+            "minLength": 56,
+            "type": "string"
+        },
+        "GYTokenName": {
+            "description": "This is the name of a token.",
+            "example": "476f6c64",
+            "format": "hex",
+            "maxLength": 64,
+            "pattern": "[0-9a-fA-F]+",
+            "type": "string"
+        },
+        "GYTxOutRef": {
+            "example": "4293386fef391299c9886dc0ef3e8676cbdbc2c9f2773507f1f838e00043a189#1",
+            "format": "hex",
+            "pattern": "[0-9a-fA-F]{64}#\"d+",
+            "type": "string"
+        },
+        "GetCredentialsByAliasRequest": {
+            "properties": {
+                "alias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "alias"
+            ],
+            "type": "object"
+        },
+        "GetCredentialsByAliasResponse": {
+            "properties": {
+                "requiredIntCredentials": {
+                    "items": {
+                        "items": [
+                            {
+                                "$ref": "#/definitions/GYMintingPolicyId"
+                            },
+                            {
+                                "type": "integer"
+                            }
+                        ],
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "type": "array"
+                    },
+                    "type": "array"
+                },
+                "requiredStrCredentials": {
+                    "items": {
+                        "items": [
+                            {
+                                "$ref": "#/definitions/GYMintingPolicyId"
+                            },
+                            {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            }
+                        ],
+                        "maxItems": 2,
+                        "minItems": 2,
+                        "type": "array"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "requiredIntCredentials",
+                "requiredStrCredentials"
+            ],
+            "type": "object"
+        },
+        "GetIndexScriptDataResponse": {
+            "properties": {
+                "indexAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "indexScriptHash": {
+                    "$ref": "#/definitions/GYMintingPolicyId"
+                },
+                "initIndexPolicyId": {
+                    "$ref": "#/definitions/GYMintingPolicyId"
+                }
+            },
+            "required": [
+                "initIndexPolicyId",
+                "indexScriptHash",
+                "indexAddress"
+            ],
+            "type": "object"
+        },
+        "GetLSSignerScriptDataRequest": {
+            "properties": {
+                "ownerAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                }
+            },
+            "required": [
+                "ownerAddress"
+            ],
+            "type": "object"
+        },
+        "GetLSTokenScriptDataRequest": {
+            "properties": {
+                "ownerAlias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ownerAlias"
+            ],
+            "type": "object"
+        },
+        "GetPossibleRewardTxRefsRequest": {
+            "properties": {
+                "alias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "alias"
+            ],
+            "type": "object"
+        },
+        "GetPossibleRewardTxRefsResponse": {
+            "properties": {
+                "rewardTxRefs": {
+                    "items": {
+                        "$ref": "#/definitions/GYTxOutRef"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "rewardTxRefs"
+            ],
+            "type": "object"
+        },
+        "InitCredentialSignerTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress"
+            ],
+            "type": "object"
+        },
+        "InitCredentialTokenTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "issuerAlias": {
+                    "type": "string"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "issuerAlias"
+            ],
+            "type": "object"
+        },
+        "InitSSOISystemTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress"
+            ],
+            "type": "object"
+        },
+        "LocalStateScriptDataResponse": {
+            "properties": {
+                "scriptHash": {
+                    "$ref": "#/definitions/GYMintingPolicyId"
+                }
+            },
+            "required": [
+                "scriptHash"
+            ],
+            "type": "object"
+        },
+        "MintLocalStateSignerTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "issuerPkh": {
+                    "$ref": "#/definitions/GYPubKeyHash"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                },
+                "user222TxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "userAlias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "user222TxRef",
+                "userAlias",
+                "issuerPkh"
+            ],
+            "type": "object"
+        },
+        "MintLocalStateTokenTxRequest": {
+            "properties": {
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "issuerAlias": {
+                    "type": "string"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                },
+                "user222TxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "userAlias": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "user222TxRef",
+                "userAlias",
+                "issuerAlias"
+            ],
+            "type": "object"
+        },
+        "MintSSOITxRequest": {
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "alias"
+            ],
+            "type": "object"
+        },
+        "ProveCredentialsTxRequest": {
+            "properties": {
+                "alias": {
+                    "type": "string"
+                },
+                "changeAddress": {
+                    "$ref": "#/definitions/GYAddressBech32"
+                },
+                "collateralTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "rewardTxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                },
+                "usedAddresses": {
+                    "items": {
+                        "$ref": "#/definitions/GYAddressBech32"
+                    },
+                    "type": "array"
+                },
+                "user222TxRef": {
+                    "$ref": "#/definitions/GYTxOutRef"
+                }
+            },
+            "required": [
+                "usedAddresses",
+                "changeAddress",
+                "user222TxRef",
+                "rewardTxRef",
+                "alias"
+            ],
+            "type": "object"
+        },
+        "UnsignedTxResponse": {
+            "properties": {
+                "unsignedTxCBOR": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "unsignedTxCBOR"
+            ],
+            "type": "object"
+        }
+    },
+    "info": {
+        "title": "",
+        "version": ""
+    },
+    "paths": {
+        "/query/get-credentials-by-alias": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpointy to query dataHandles the request to get all credentials for a specific alias.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetCredentialsByAliasRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/GetCredentialsByAliasResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                }
+            }
+        },
+        "/query/get-index-script-data": {
+            "get": {
+                "description": "Endpointy to query dataHandles the request to get index script data.",
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/GetIndexScriptDataResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/query/get-local-state-signer-data": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpointy to query dataHandles the request to get local state script signer data.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetLSSignerScriptDataRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/LocalStateScriptDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                }
+            }
+        },
+        "/query/get-local-state-token-data": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpointy to query dataHandles the request to get local state script token data.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetLSTokenScriptDataRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/LocalStateScriptDataResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                }
+            }
+        },
+        "/query/get-possible-reward-tx-refs": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpointy to query dataHandles the request to get all tx refs possible to be unlocked from prove validator for a given global token alias.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/GetPossibleRewardTxRefsRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/GetPossibleRewardTxRefsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                }
+            }
+        },
+        "/tx/add-credential-signer": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows everyone to submit transaction information for adding credentials to a specific utxo.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddCredentialSignerTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to add credentials with correct public key hash."
+            }
+        },
+        "/tx/add-credential-token": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows everyone to submit transaction information for adding credentials to a specific utxo.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddCredentialTokenTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to add credentials with correct token alias."
+            }
+        },
+        "/tx/add-rewards": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows users to add a reward.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddRewardsTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to add a reward if credentials are provided."
+            }
+        },
+        "/tx/init-credential-signer": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows everyone to submit transaction information for initialising a credential issuer restricted by a public key hash.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InitCredentialSignerTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to initialise a credential issuer."
+            }
+        },
+        "/tx/init-credential-token": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows everyone to submit transaction information for initialising a credential issuer restricted by an alias.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InitCredentialTokenTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to initialise a credential issuer."
+            }
+        },
+        "/tx/init-ssoi-system": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows to submit transaction information for initialising the ssoi system.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/InitSSOISystemTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to initialise the ssoi system."
+            }
+        },
+        "/tx/mint-local-state-signer": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows holder of a global state token to mint a local state signer.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/MintLocalStateSignerTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to mint a local state signer."
+            }
+        },
+        "/tx/mint-local-state-token": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows holder of a global state token to mint a local state token.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/MintLocalStateTokenTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to mint a local state token."
+            }
+        },
+        "/tx/mint-ssoi": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows everyone to submit transaction information for minting a new ssoi token.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/MintSSOITxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to mint a new ssoi token."
+            }
+        },
+        "/tx/prove-credentials": {
+            "post": {
+                "consumes": [
+                    "application/json;charset=utf-8"
+                ],
+                "description": "Endpoints to build transactions.This endpoint allows users with correct credentials to unlock a reward.",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProveCredentialsTxRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json;charset=utf-8"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/UnsignedTxResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid `body`"
+                    }
+                },
+                "summary": "Andamio SSOI APIHandles the request to unlock a reward if credentials are provided."
+            }
+        }
+    },
+    "swagger": "2.0"
+}

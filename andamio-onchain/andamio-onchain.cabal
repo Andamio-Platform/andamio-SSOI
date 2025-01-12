@@ -1,0 +1,105 @@
+cabal-version:      3.8
+name:               andamio-onchain
+version:            0.1.0
+synopsis:           Smart contracts for a SSOI system
+description:        Proof of Concept for a Self-sovereign on-chain Identity (SSOI) system.
+license-file:       LICENSE
+build-type:         Simple
+category:           Blockchain, Cardano, PoC
+homepage:           https://andamio.io/
+bug-reports:        https://github.com/Andamio-Platform/andamio-SSOI/issues
+tested-with:        GHC == 9.6.5
+
+source-repository head
+  type:     git
+  location: https://github.com/Andamio-Platform/andamio-SSOI
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Andamio.Index.Compiled
+                     , Andamio.Index.OnChain.IndexScripts.IndexParams
+                     , Andamio.Index.OnChain.IndexScripts.SpendingScript
+                     , Andamio.Index.OnChain.IndexScripts.MintingScript
+                     , Andamio.Index.OnChain.IndexScripts
+                     , Andamio.Index.OnChain.InitIndexPolicy
+
+                     , Andamio.GlobalState.OnChain.GlobalStateDatum
+                     , Andamio.GlobalState.OnChain.GlobalStateValidator
+                     , Andamio.GlobalState.Compiled
+
+                     , Andamio.LocalState.OnChain.Signer.SignerParams
+                     , Andamio.LocalState.OnChain.Signer.MintingScript
+                     , Andamio.LocalState.OnChain.Signer.SpendingScript
+                     , Andamio.LocalState.OnChain.SignerScripts
+                     , Andamio.LocalState.OnChain.Token.TokenParams
+                     , Andamio.LocalState.OnChain.Token.MintingScript
+                     , Andamio.LocalState.OnChain.Token.SpendingScript
+                     , Andamio.LocalState.OnChain.TokenScripts
+                     , Andamio.LocalState.OnChain.Utility
+                     , Andamio.LocalState.Compiled
+
+                     , Andamio.ProveCreds.OnChain.ProveCredsDatum
+                     , Andamio.ProveCreds.OnChain.ProveCredsValidator
+                     , Andamio.ProveCreds.Compiled
+
+                    , Andamio.Utility.OnChain.Value
+                    , Andamio.Utility.OnChain.TxInInfo
+                    , Andamio.Utility.OnChain.TxOut 
+                    , Andamio.Utility.OnChain.LazyContextV3
+                    , Andamio.Utility.OnChain.Datum
+                    , Andamio.Utility.OnChain.BuiltinByteString
+                    , Andamio.Utility.OnChain.Redeemers
+                    , Andamio.Utility.OnChain.Address
+
+  build-depends:       base 
+                     , plutus-ledger-api
+                     , plutus-tx 
+                     , plutus-core
+                     , plutus-tx-plugin
+
+  default-language:    Haskell2010
+
+  ghc-options:         -Wall -Wunused-packages
+                       -fobject-code 
+                       -fno-ignore-interface-pragmas 
+                       -fno-omit-interface-pragmas 
+                       -fno-strictness 
+                       -fno-spec-constr 
+                       -fno-specialise
+                       -fno-full-laziness
+                       -fno-unbox-strict-fields
+                       -fno-unbox-small-strict-fields
+                       -fplugin-opt PlutusTx.Plugin:target-version=1.1.0 
+                       -fplugin-opt PlutusTx.Plugin:max-simplifier-iterations-pir=12
+                       -fplugin-opt PlutusTx.Plugin:max-simplifier-iterations-uplc=12
+                       -fplugin-opt PlutusTx.Plugin:max-cse-iterations=4
+                       -fplugin-opt PlutusTx.Plugin:simplifier-unwrap-cancel
+                       -fplugin-opt PlutusTx.Plugin:simplifier-beta
+                       -fplugin-opt PlutusTx.Plugin:simplifier-inline
+                       -fplugin-opt PlutusTx.Plugin:strictify-bindings
+                       -fplugin-opt PlutusTx.Plugin:simplifier-remove-dead-bindings
+                       -fplugin-opt PlutusTx.Plugin:relaxed-float-in
+                       -fplugin-opt PlutusTx.Plugin:remove-trace
+                       -fplugin-opt PlutusTx.Plugin:optimize
+                       -fplugin-opt PlutusTx.Plugin:verbosity=0
+                       -fplugin-opt PlutusTx.Plugin:inline-constants
+                       -Wcompat
+                       -Wincomplete-uni-patterns
+                       -Wincomplete-record-updates
+                       -Wmissing-export-lists
+                       -Wmissing-deriving-strategies
+                       -fno-show-valid-hole-fits 
+
+  default-extensions: TemplateHaskell 
+                      OverloadedStrings 
+                      DataKinds 
+                      NoImplicitPrelude 
+                      DerivingStrategies
+                      DeriveGeneric
+                      ScopedTypeVariables
+                      MultiParamTypeClasses
+                      ViewPatterns
+                      RecordWildCards
+                      TypeApplications
+                      Strict
+                      BangPatterns
