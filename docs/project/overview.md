@@ -91,10 +91,15 @@ This Miro board provides an in-depth look at the schema and various components, 
 ```haskell
 
 data SSOISchema = SSOISchema
-    {   id                  :: CurrencySymbol 
+    {   id                  :: CurrencySymbol
     ,   username            :: BuiltinString
     ,   controller          :: Maybe Address
-    ,   verificationMethod  :: CurrencySymbol
-    ,   AdditionalData      :: Maybe BuiltinData
+    ,   verificationMethod  :: [VerificationMethod]
     }
+
+data VerificationMethod = VerificationMethod
+    { verifier :: CurrencySymbol
+    , additionalData :: Maybe BuiltinData
+    }
+
 ```

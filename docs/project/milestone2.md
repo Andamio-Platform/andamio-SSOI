@@ -1,0 +1,11 @@
+- [x] Link to documentation on how to set up a development environment, including any relevant Docker images and examples of environment variables
+    - [Setup](SETUP.md)
+    - [server configuration](../../andamio-config.json)
+- [ ] Share on-chain transaction hashes showing the successful deployment of smart contracts
+    - init system tx hash showing all reference script
+    - address currency symbols
+- [ ] Share link to report on test transaction outcomes
+    - describe by order of apis + link
+- [ ] Share a first draft of an SSOI standard via GitHub link
+- [x] Share a public link to GitHub repository that enables interaction with the test system
+    - [repository](https://github.com/Andamio-Platform/andamio-SSOI)
