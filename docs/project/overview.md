@@ -1,105 +1,50 @@
-# Andamio SSOI Overview
+# Overview of Andamio Self-Sovereign On-Chain Identity (SSOI)
 
 ## Abstract
 
-The Andamio Self-Sovereign On-Chain Identity (SSOI) is a decentralized identity management framework built to enable secure, self-sovereign identity solutions on the Cardano blockchain. This document outlines how Andamio SSOI advances existing SSID standards by bridging the identity and blockchain layers, creating a versatile, open-source solution adaptable for diverse use cases. The SSOI employs data structure standards that introduces a more inclusive identity model, solving key challenges associated with blockchain integration in identity management and empowering developers to build self-sovereign identity solutions on Cardano.
+The Andamio Self-Sovereign On-Chain Identity (SSOI) represents a cutting-edge, decentralized identity management framework. Built on the Cardano blockchain, this solution bridges the identity and blockchain layers, enhancing existing self-sovereign identity (SSID) standards. By introducing an open-source, inclusive identity model, Andamio SSOI addresses challenges in blockchain-integrated identity management and empowers developers to implement self-sovereign identity solutions tailored to diverse use cases.
 
-## Motivation: why is this SSOI necessary?
+## The Need for Andamio SSOI
 
-Existing self-sovereign identity (SSID) solutions are often limited by centralized control, interoperability challenges, and constrained by privacy concerns that prevent full autonomy over personal identity data. Andamio SSOI aims to:
+Existing SSID solutions face significant limitations, including centralized control, interoperability barriers, and privacy concerns that hinder autonomy over personal identity data. Andamio SSOI seeks to address these challenges by:
 
-- **Enhance Decentralization and Control**: Empower users to control their own data and identity verification processes without relying on a third party.
-- **Enable Secure Blockchain Integration**: Facilitate seamless integration of identity solutions on Cardano's blockchain, supporting cryptographic proofs and on-chain data structures.
-- **Generalize Andamio's Closed-Source Access Token**: Provide an open-source alternative of Andamio's access token, removing exclusive restrictions while still maintaining core functionalities.
+- **Enhancing Decentralization and Control**: Giving users autonomy over their data and identity verification processes, free from third-party dependency.
+- **Facilitating Secure Blockchain Integration**: Enabling seamless integration of identity solutions with Cardano, leveraging cryptographic proofs and robust on-chain data structures.
+- **Generalizing Andamio’s Access Token**: Providing an open-source version of the proprietary access token, retaining its core functionality while removing exclusivity.
 
-## Rationale: how does this SSOI achieve its goals?
+## Achieving the Goals of Andamio SSOI
 
-Andamio SSOI introduces a self-sovereign identity solution compatible with decentralized applications (dApps) and services on Cardano, designed for robust user authentication, authorization, and data integrity. The SSOI combines:
+The Andamio SSOI framework achieves its objectives through:
 
-- **BuiltinData Utilization**: Leveraging Cardano’s BuiltinData for data anchoring, which simplifies linking identity data directly on-chain.
-- **Support for Role-Based Access Control (RBAC)**: Enabling permission layers for identity data access and management.
+- **Utilization of BuiltinData**: Leveraging Cardano’s BuiltinData for efficient and secure data anchoring directly on-chain.
+- **Role-Based Access Control (RBAC)**: Implementing permission layers for granular identity data management and access control.
 
-### Use-cases and Stakeholders
+### Stakeholders and Use Cases
 
-- **dApp Developers**: Integrate SSOI for secure, decentralized user onboarding and authentication.
-- **Financial Institutions**: Enable compliant, self-sovereign digital identities for secure transactions.
-- **Education and Healthcare**: Support secure, verified credentials and sensitive data management.
-- **Government and Regulatory Bodies**: Deploy decentralized identity verification for public services.
-- **Users**: Maintain control over their identities, with cryptographic proofs of data integrity.
+The Andamio SSOI system caters to diverse stakeholders:
+
+- **dApp Developers**: Streamlining decentralized user onboarding and authentication.
+- **Financial Institutions**: Supporting compliant, secure self-sovereign identities for transactions.
+- **Education and Healthcare**: Enabling secure credential verification and sensitive data handling.
+- **Government and Regulatory Bodies**: Facilitating decentralized identity verification for public services.
+- **Individual Users**: Empowering users to control their identities with cryptographic proof of data integrity.
 
 ## Specification
 
-### Definitions
-
-- **SSOI (Self-Sovereign On-Chain Identity)**: A decentralized identity protocol enabling users to manage their identities autonomously on the blockchain.
-- **CurrencySymbol**: Represents a unique identifier for a currency or token on the Cardano blockchain.
-- **BuiltinString**: Represents textual data directly understood by the Cardano smart contract platform (Plutus).
-- **Address**: Represents a Cardano address used to store assets, associate with DIDs, or verify ownership.
-- **BuiltinData**: Cardano’s blockchain on-chain data type for efficiently storing and referencing data on-chain.
-
-
 ### Schema
 
-Andamio SSOI defines a standardized on-chain data structure for DIDs, anchored on-chain for identity verification. For a detailed visual representation of the SSOI schema, including various figures and diagrams, please refer to the following Miro board:
+Andamio SSOI utilizes a standardized on-chain data structure for DIDs, ensuring robust identity verification. Detailed schema representations and diagrams are available on the dedicated Miro board:
 
-[***SSOI Schema Miro Board***](https://miro.com/app/board/uXjVLDsFWko=/) 
+[***SSOI Schema Miro Board***](https://miro.com/app/board/uXjVLDsFWko=/)
 
-This Miro board provides an in-depth look at the schema and various components, helping to visualize how the SSOI system is structured and interacts with other components within the Andamio ecosystem.
+### SSOI Properties
 
+The following table outlines key properties of the Andamio SSOI:
 
-### SSOI properties
-
-<table>
-    <thead>
-        <tr>
-        <th>Property</th>
-        <th >Required?</th>
-        <th >Value constraints</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td align="Left"><code>id</code></td>
-            <td align="center">yes</td>
-            <td align="Left">A <code>CurrencySymbol</code> to retrieve the <code>TokenName</code> of the SSOI ID, which is used to identify the DID and conforms to the Andamio DID Syntax.</td>
-        </tr>
-        <tr>
-            <td align="Left"><code>username</code></td>
-            <td align="center">no</td>
-            <td align="Left">A <code>BuiltinString</code> that identify user of the DID.</td>
-        </tr>
-        <tr>
-            <td align="Left"><code>controller</code></td>
-            <td align="center">no</td>
-            <td align="Left">An <code>Address</code> that is linked to the owner of id token.</td>
-        </tr>
-        <tr>
-            <td align="Left"><code>verificationMethod</code></td>
-            <td align="center">yes</td>
-            <td align="Left">A <code>CurrencySymbol</code> that points to the script which contain <code>Verification Method</code> data and that conform to the rules in Verification Method properties.</td>
-        </tr>
-        <tr>
-            <td align="Left"><code>AdditionalData</code></td>
-            <td align="center">yes</td>
-            <td align="Left">A <code>BuiltinData</code> that can hole additional data for the credential.</td>
-        </tr>
-    </tbody>
-</table>
-
-### Technical Details
-
-```haskell
-
-data SSOISchema = SSOISchema
-    {   id                  :: CurrencySymbol
-    ,   username            :: BuiltinString
-    ,   controller          :: Maybe Address
-    ,   verificationMethod  :: [VerificationMethod]
-    }
-
-data VerificationMethod = VerificationMethod
-    { verifier :: CurrencySymbol
-    , additionalData :: Maybe BuiltinData
-    }
-
-```
+| Property            | Required? | Value Constraints                                                                                       |
+|---------------------|-----------|---------------------------------------------------------------------------------------------------------|
+| `id`                | Yes       | A `CurrencySymbol` to retrieve the `TokenName` of the SSOI ID, adhering to Andamio DID syntax.         |
+| `alsoKnownAs`          | Yes        | A `BuiltinString` identifying the user of the DID.                                                     |
+| `controller`        | No        | An `Address` linked to the owner of the ID token.                                                      |
+| `verificationMethod`| Yes       | A `CurrencySymbol` pointing to the script containing `Verification Method` data.                       |
+| `AdditionalData`    | Yes       | A `BuiltinData` field holding additional credential data.                                              |
