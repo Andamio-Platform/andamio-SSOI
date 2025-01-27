@@ -1,15 +1,16 @@
 #!/bin/bash
 # add rewards to prove credential validator which can be unlocked if credentials are met
 
-USER=$1 # wallet name stored in ../preprod/wallets/
-OWN_ALIAS=$2 # 222 global token must be in USER wallet
+USER=$1       # wallet name stored in ../preprod/wallets/
+OWN_ALIAS=$2  # 222 global token must be in USER wallet
+CREDENTIAL=$3 # arbitrary credential string
 
-source env.sh 
+source env.sh
 
 ENDPOINT_NAME=add-rewards
 TX_NAME="$TX_PATH/$ENDPOINT_NAME"
 
-UTXO_IN_ADA=$(get_address_biggest_lovelace $(cat $WALLET_PATH/$USER.addr)) 
+UTXO_IN_ADA=$(get_address_biggest_lovelace $(cat $WALLET_PATH/$USER.addr))
 echo "UTXO_IN_ADA: $UTXO_IN_ADA"
 USER_ADDR=$(cat $WALLET_PATH/$USER.addr)
 echo "USER_ADDR: $USER_ADDR"
@@ -20,16 +21,17 @@ reqToken=$(jq -n --arg ownerAlias "$OWN_ALIAS" '{"ownerAlias": $ownerAlias}')
 respLSToken=$(curl -H "Content-Type: application/json" -d "$reqToken" "$SERVER_QUERY_URL/get-local-state-token-data")
 
 data=$(jq -n \
-        --arg addr "$USER_ADDR" \
-        --arg utxoAda "$UTXO_IN_ADA" \
-        --arg issuerAlias "$OWN_ALIAS" \
-        --arg lsSignerCs "$(echo $respLSSigner | jq -r '.scriptHash')" \
-        --arg lsTokenCs "$(echo $respLSToken | jq -r '.scriptHash')" \
-        '{ "usedAddresses": [$addr]
+    --arg addr "$USER_ADDR" \
+    --arg utxoAda "$UTXO_IN_ADA" \
+    --arg issuerAlias "$OWN_ALIAS" \
+    --arg lsSignerCs "$(echo $respLSSigner | jq -r '.scriptHash')" \
+    --arg lsTokenCs "$(echo $respLSToken | jq -r '.scriptHash')" \
+    --arg cred "$CREDENTIAL" \
+    '{ "usedAddresses": [$addr]
          , "changeAddress": $addr
          , "collateralTxRef": $utxoAda
          , "requiredIntCredentials": [[$lsTokenCs, 1]]
-         , "requiredStrCredentials": [[$lsSignerCs, ["test1"]]]
+         , "requiredStrCredentials": [[$lsSignerCs, [$cred]]]
          , "lovelaceRewards": 5000000
          , "tokensToDeposit": []}')
 
@@ -39,7 +41,7 @@ resp=$(curl -H "Content-Type: application/json" -d "$data" "$SERVER_TX_URL/$ENDP
 
 #echo $resp
 
-cat $EMPTY_TX_PATH | jq --arg ch "$(echo $resp | jq -r '.unsignedTxCBOR')" '.cborHex=$ch' > $TX_NAME.raw
+cat $EMPTY_TX_PATH | jq --arg ch "$(echo $resp | jq -r '.unsignedTxCBOR')" '.cborHex=$ch' >$TX_NAME.raw
 
 cardano-cli conway transaction sign \
     --testnet-magic ${TESTNET_MAGIC} \

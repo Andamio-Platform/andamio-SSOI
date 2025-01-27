@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export REPO_HOME="$HOME/andamio/andamio-SSOI" # path to this repository
-export NETWORK_DIR_PATH="$REPO_HOME/preprod"  # path to network in use like preprod
+export REPO_HOME="$HOME/Desktop/Gimbalabs/andamio-SSOI" # path to this repository
+export NETWORK_DIR_PATH="$REPO_HOME/preprod"            # path to network in use like preprod
 export TESTNET_MAGIC=1
 
 export TX_PATH="$NETWORK_DIR_PATH/tx"
@@ -29,7 +29,7 @@ to_hex_tn() {
 }
 
 # $1 = address
-get_address_biggest_lovelace(){
+get_address_biggest_lovelace() {
     cardano-cli query utxo --testnet-magic ${TESTNET_MAGIC} --address $1 --out-file utxos.tmp
     max_utxo=$(cat utxos.tmp | jq 'with_entries(select((.value.value | length) == 1)) | to_entries | max_by(.value.value.lovelace)')
     rm utxos.tmp
@@ -39,9 +39,9 @@ get_address_biggest_lovelace(){
 # $1 = address
 # $2 = currency symbol
 # $3 = token name
-get_UTxO_by_token(){
+get_UTxO_by_token() {
     cardano-cli query utxo --testnet-magic ${TESTNET_MAGIC} --address $1 --out-file utxos.tmp
-    token_utxo=$(cat utxos.tmp | jq --arg cs $2 --arg tn $3  'to_entries[] | select(.value.value[$cs][$tn]>=1)')
+    token_utxo=$(cat utxos.tmp | jq --arg cs $2 --arg tn $3 'to_entries[] | select(.value.value[$cs][$tn]>=1)')
     rm utxos.tmp
     echo $(echo $token_utxo | jq -r '.key')
 }

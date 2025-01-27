@@ -14,7 +14,7 @@ Change [REPO_HOME](../../scripts/env.sh#L3) to point to this repository.
 
 Ensure you have your configuration files ready. You will need two JSON configuration files:
 
-1- `config-maestro.json` or `config-maestro.json` - Core configuration file.
+1- `config-maestro.json` or `config-blockfrost.json` - Core configuration file.
     - `sample.config.json` with maestro information
 2- `andamio-config.json` - Andamio specific configuration file.
     - used to identify an instance

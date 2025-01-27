@@ -10,7 +10,7 @@ import           GeniusYield.Types                 (addressFromBech32, mintingPo
 import           GeniusYield.TxBuilder             (scriptAddress)
 import           Prelude                           (Maybe(..), IO, Show, pure, ($), String)
 import           Data.Swagger           as Swagger (ToSchema)
-import           Andamio.API.Context               (AndamioConfig (..), Ctx (..), 
+import           Andamio.API.Context               (AndamioConfig (..), Ctx (..),
                                                    runTxI, runQuery)
 import           Andamio.Utility.Tx                (globalStateValidator, initIndexPolicy, indexScript,
                                                    localStateTokenScript)
@@ -21,7 +21,7 @@ data InitCredentialTokenTxRequest = InitCredentialTokenTxRequest
     {   usedAddresses        ::  ![GYAddressBech32]     -- ^ used wallet addresses
     ,   changeAddress        ::  !GYAddressBech32       -- ^ change address
     ,   collateralTxRef      ::  !(Maybe GYTxOutRef)    -- ^ maybe collateral tx ref
-    ,   issuerAlias          ::  !String     -- ^ issuer alias without prefix
+    ,   issuerAlias          ::  !String                -- ^ issuer alias without prefix
     } deriving (Show, Generic, FromJSON, Swagger.ToSchema)
 
 handleInitCredentialToken :: Ctx -> AndamioConfig -> InitCredentialTokenTxRequest -> IO UnsignedTxResponse
