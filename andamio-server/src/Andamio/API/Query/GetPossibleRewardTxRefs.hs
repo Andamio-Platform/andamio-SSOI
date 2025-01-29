@@ -12,13 +12,13 @@ import           GeniusYield.Types                 (mintingPolicyId, addressFrom
                                                    GYTxOutRef, GYUTxO(..))
 import           GeniusYield.TxBuilder             (scriptAddress)
 import           GeniusYield.GYConfig              (GYCoreConfig(..))
-import           Prelude                           (IO, Show, pure, ($), Integer, Bool(..), String, elem, all, (<=), (&&))
+import           Prelude                           (IO, Show, pure, ($), Integer, Bool(..), String, elem, all, (<=), (&&), Maybe(..))
 import           Data.Swagger           as Swagger (ToSchema)
 import           Andamio.ProveCreds.OnChain.ProveCredsDatum (ProveCredsDatum(..))
 import           Andamio.API.Context               (AndamioConfig (..), Ctx (..), 
                                                    runQuery)
 import           Andamio.Utility.Tx                (globalStateValidator, initIndexPolicy, indexScript, unsafeGYOtDatumToData, proveCredsScript)
-import           Andamio.Utility.API               (queryUtxosFromAddress, unsafeMPIdFromCs, csToGyScrHash, queryUtxoFromAddressWithToken)
+import           Andamio.Utility.API               (queryUtxosFromAddress, unsafeMPIdFromCs, csToGyScrHash, queryUtxoFromAddressWithToken')
 
 data GetPossibleRewardTxRefsRequest = GetPossibleRewardTxRefsRequest
     {   alias   :: !String
@@ -55,11 +55,15 @@ handleGetPossibleRewardTxRefs ctx AndamioConfig{..} GetPossibleRewardTxRefsReque
                 goInt :: [(CurrencySymbol, Integer)] -> IO Bool
                 goInt [] = pure True
                 goInt ((cs, int):ys) = do
-                  result <- queryUtxoFromAddressWithToken ctx (addressFromScriptHash (cfgNetworkId $ ctxCoreCfg ctx) $ csToGyScrHash cs) (unsafeMPIdFromCs cs) (fromString alias)
-                  if int <= unsafeGYOtDatumToData @Integer (utxoOutDatum result) then goInt ys else pure False
+                  result <- queryUtxoFromAddressWithToken' ctx (addressFromScriptHash (cfgNetworkId $ ctxCoreCfg ctx) $ csToGyScrHash cs) (unsafeMPIdFromCs cs) (fromString alias)
+                  case result of
+                    Nothing -> pure False
+                    Just utxo -> if int <= unsafeGYOtDatumToData @Integer (utxoOutDatum utxo) then goInt ys else pure False
                 
                 goStr :: [(CurrencySymbol, [BuiltinByteString])] -> IO Bool
                 goStr [] = pure True
                 goStr ((cs, bbsL):ys) = do
-                  result <- queryUtxoFromAddressWithToken ctx (addressFromScriptHash (cfgNetworkId $ ctxCoreCfg ctx) $ csToGyScrHash cs) (unsafeMPIdFromCs cs) (fromString alias)
-                  if all (`elem` unsafeGYOtDatumToData @[BuiltinByteString] (utxoOutDatum result)) bbsL then goStr ys else pure False
+                  result <- queryUtxoFromAddressWithToken' ctx (addressFromScriptHash (cfgNetworkId $ ctxCoreCfg ctx) $ csToGyScrHash cs) (unsafeMPIdFromCs cs) (fromString alias)
+                  case result of
+                    Nothing -> pure False
+                    Just utxo -> if all (`elem` unsafeGYOtDatumToData @[BuiltinByteString] (utxoOutDatum utxo)) bbsL then goStr ys else pure False

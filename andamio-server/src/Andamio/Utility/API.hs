@@ -9,6 +9,7 @@ module Andamio.Utility.API
     , unsafeMPIdFromCs
     , queryUtxosFromAddress
     , queryUtxoFromAddressWithToken
+    , queryUtxoFromAddressWithToken'
     , queryUtxosFromAddressWithToken
     , queryTxOutRefWithRefScrAtAddress
     , mkRefScriptSkeleton
@@ -84,6 +85,14 @@ queryUtxoFromAddressWithToken ctx addr cs tn = do
         [] -> error $ "no utxo found for token: " ++ show (cs, tn)
         [tx] -> pure tx
         _ -> error $ "more than one utxo found for token: " ++ show (cs, tn)
+
+queryUtxoFromAddressWithToken' :: Ctx -> GYAddress -> GYMintingPolicyId -> GYTokenName -> IO (Maybe GYUTxO)
+queryUtxoFromAddressWithToken' ctx addr cs tn = do
+    result <- gyQueryUtxosAtAddress (ctxProviders ctx) addr (Just $ GYToken cs tn)
+    case utxosToList result of
+        []   -> pure Nothing
+        [tx] -> pure (Just tx)
+        _    -> error $ "more than one utxo found for token: " ++ show (cs, tn)
 
 queryUtxosFromAddressWithToken :: Ctx -> GYAddress -> GYMintingPolicyId -> GYTokenName -> IO [GYUTxO]
 queryUtxosFromAddressWithToken ctx addr cs tn = do
